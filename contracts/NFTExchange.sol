@@ -20,31 +20,25 @@ contract NFTExchange is Ownable {
 
     mapping(uint256 => Listing) public listings;
 
-    function createListing(
-        address _nftContract,
-        uint256 _tokenId,
-        uint256 _price
-        )
-        public
-    {
-        IERC721(_nftContract).transferFrom(msg.sender, address(this), _tokenId);
+    function createListing(address nftContract, uint256 tokenId, uint256 price) public {
+        IERC721(nftContract).transferFrom(msg.sender, address(this), tokenId);
 
         _listingIds.increment();
         uint256 listingId = _listingIds.current();
 
         listings[listingId] = Listing({
             id: listingId,
-            nftContract: _nftContract,
-            tokenId: _tokenId,
+            nftContract: nftContract,
+            tokenId: tokenId,
             seller: payable(msg.sender),
-            price: _price,
+            price: price,
             isSold: false
         });
 
     }
 
-    function buyNFT(uint256 _listingId) public payable {
-        Listing storage listing = listings[_listingId];
+    function buyNFT(uint256 listingId) public payable {
+        Listing storage listing = listings[listingId];
         require(!listing.isSold, "NFT is already sold");
         require(msg.value >= listing.price, "Insufficient funds");
 
