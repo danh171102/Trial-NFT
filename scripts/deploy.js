@@ -7,13 +7,21 @@
 const hre = require("hardhat");
 
 async function main() {
-    const [deployer] = await ethers.getSigners();
+    const [deployerNFT] = await ethers.getSigners();
 
-    console.log("Deploying contracts with the account:", deployer.address);
+    console.log("Deploying contracts with the account:", deployerNFT.address);
 
     const DaToken = await ethers.deployContract("DaToken");
 
     console.log("Token address:", await DaToken.getAddress());
+
+    const [deployerNFTExchange] = await ethers.getSigners();
+
+    console.log("Deploying contracts with the account:", deployerNFTExchange.address);
+
+    const NFTExchange = await ethers.deployContract("NFTExchange");
+
+    console.log("Token address:", await NFTExchange.getAddress());
 }
 // async function main() {
 //   const DaToken = await ethers.getContractFactory("DaToken")
